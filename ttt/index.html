@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>I'm Sorry — From My Heart</title>
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #2b1055;
+      --accent: #ff6b9a;
+      --accent-2: #ffd166;
+      --glass: rgba(255,255,255,0.06);
+      --card-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      --rad: 22px;
+      --ease: cubic-bezier(.2,.9,.3,1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html,body{height:100%;margin:0;overflow:hidden;}
+    body{
+      background: linear-gradient(270deg, #ff6b9a, #ffd166, #6b5bff, #ff6b9a);
+      background-size: 800% 800%;
+      animation: gradientShift 15s ease infinite;
+      display:flex;align-items:center;justify-content:center;padding:16px;color:white;
+      position:relative;
+    }
+
+    @keyframes gradientShift {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    .stage{
+      width:100%;max-width:600px;background:var(--glass);border-radius:var(--rad);
+      padding:20px;box-shadow:var(--card-shadow);backdrop-filter: blur(8px);
+      animation: fadeInUp 1s var(--ease);
+    }
+
+    h1{margin:0 0 10px;text-align:center;font-size:1.8em;animation: glowText 2s ease-in-out infinite alternate;}
+    @keyframes glowText{0%{text-shadow:0 0 10px var(--accent);}100%{text-shadow:0 0 20px var(--accent-2);}}
+
+    .typewriter{font-size:16px;line-height:1.6;white-space:pre-wrap;animation: fadeIn 2s ease forwards;word-break:break-word;}
+    .chip,.heart-btn{display:inline-block;margin:5px;}
+    .chip{background:var(--glass);padding:8px 12px;border-radius:999px;font-size:14px;cursor:pointer;transition:transform 0.3s, background 0.3s;}
+    .chip:hover{transform:scale(1.05);background:rgba(255,255,255,0.1);}
+    .heart-btn{background:linear-gradient(90deg,var(--accent),#ff9cc0);border:none;padding:10px 14px;border-radius:12px;color:#fff;font-weight:bold;font-size:14px;cursor:pointer;transition:transform 0.3s, box-shadow 0.3s;}
+    .heart-btn:hover{transform:scale(1.05);box-shadow:0 0 15px var(--accent);}
+
+    @keyframes fadeInUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{from{opacity:0} to{opacity:1}}
+    @keyframes floatHeart{0%{transform:translateY(0) scale(0.8);opacity:0}10%{opacity:1}100%{transform:translateY(-100vh) scale(1.2);opacity:0}}
+
+    .heart{position:absolute;bottom:-10px;font-size:20px;animation: floatHeart 6s linear infinite;pointer-events:none;}
+
+    @media (max-width: 480px) {
+      body{padding:10px;}
+      .stage{padding:15px;}
+      h1{font-size:1.4em;}
+      .typewriter{font-size:14px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <h1>💖 My Love angel, I'm Sorry 💖</h1>
+    <div class="typewriter" id="typewriter"></div>
+    <div style="margin-top:20px;text-align:center;">
+      <button class="chip" id="copyBtn">Copy message</button>
+      <button class="heart-btn" id="sendBtn">Send with ❤</button>
+    </div>
+  </div>
+  <script>
+    const message = `My dearest love,\n\nI know I have hurt you, and that thought breaks my heart into pieces. I never wanted to see you sad, never wanted to be the reason a single tear fell from your beautiful eyes. You are my world, my reason to smile every morning, and my safe place at the end of every day.\n\nI am deeply, endlessly sorry for my mistakes. If I could, I would take back every moment that caused you pain and replace it with laughter, warmth, and love. I promise to listen more, to care more, to love you more fiercely than ever before. I want to spend my days making you feel cherished, understood, and adored.\n\nPlease let me hold you close again, so I can show you how much you mean to me — not just with words, but with every heartbeat, every touch, and every action. My love for you is eternal, and I will never stop proving it. ❤️`;
+
+    const typeEl = document.getElementById('typewriter');
+    let idx=0;
+    function typeWriter(){
+      if(idx < message.length){
+        typeEl.textContent += message[idx++];
+        setTimeout(typeWriter, 35);
+      }
+    }
+    typeWriter();
+
+    document.getElementById('copyBtn').addEventListener('click', async ()=>{
+      await navigator.clipboard.writeText(message);
+      alert('Message copied to clipboard!');
+    });
+
+    document.getElementById('sendBtn').addEventListener('click', ()=>{
+      createHearts();
+      alert('Sending your heartfelt apology...');
+    });
+
+    function createHearts(){
+      for(let i=0;i<15;i++){
+        const heart=document.createElement('div');
+        heart.className='heart';
+        heart.style.left=Math.random()*100+'vw';
+        heart.style.animationDuration=(3+Math.random()*3)+'s';
+        heart.style.fontSize = (16 + Math.random()*20) + 'px';
+        heart.textContent='❤';
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),6000);
+      }
+    }
+    setInterval(()=>createHearts(), 2500);
+  </script>
+</body>
+</html>
